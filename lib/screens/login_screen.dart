@@ -8,6 +8,7 @@ import 'package:project_abc/screens/verificationOtp.dart';
 import 'package:provider/provider.dart';
 import '../pallete.dart';
 import '../widgets/widgets.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
 class LoginScreen extends StatelessWidget {
   final phoneController = TextEditingController();
@@ -20,7 +21,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    String _phone;
+    String? _phone;
     return Stack(
       children: [
         const BackgroundImage(
@@ -53,28 +54,51 @@ class LoginScreen extends StatelessWidget {
                         color: Colors.grey[500]!.withOpacity(0.5),
                         borderRadius: BorderRadius.circular(16),
                       ),
+                      // child: Center(
+                      //   child: TextFormField(
+                      //       decoration: InputDecoration(
+                      //         border: InputBorder.none,
+                      //         prefixIcon: Padding(
+                      //           padding: const EdgeInsets.symmetric(
+                      //               horizontal: 20.0),
+                      //           child: Icon(
+                      //             FontAwesomeIcons.phone,
+                      //             size: 28,
+                      //             color: kWhite,
+                      //           ),
+                      //         ),
+                      //         hintText: "Enter Phone Number ",
+                      //         hintStyle: kBodyText,
+                      //       ),
+                      //       style: kBodyText,
+                      //       //validator: RequiredValidator(errorText: 'UserName Required'),
+                      //       // onSaved: (value) => _phone = value!,
+                      //       controller: phoneController,
+                      //       textInputAction: TextInputAction.done,
+                      //       keyboardType: TextInputType.phone),
+                      // ),
                       child: Center(
-                        child: TextFormField(
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              prefixIcon: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20.0),
-                                child: Icon(
-                                  FontAwesomeIcons.phone,
-                                  size: 28,
-                                  color: kWhite,
-                                ),
+                        child: IntlPhoneField(
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            prefixIcon: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20.0),
+                              child: Icon(
+                                FontAwesomeIcons.phone,
+                                size: 28,
+                                color: kWhite,
                               ),
-                              hintText: "Enter Phone Number ",
-                              hintStyle: kBodyText,
                             ),
-                            style: kBodyText,
-                            //validator: RequiredValidator(errorText: 'UserName Required'),
-                            // onSaved: (value) => _phone = value!,
-                            controller: phoneController,
-                            textInputAction: TextInputAction.done,
-                            keyboardType: TextInputType.phone),
+                            hintText: "Enter Phone Number ",
+                            hintStyle: kBodyText,
+                          ),
+                          style: kBodyText,
+                          controller: phoneController,
+                          textInputAction: TextInputAction.done,
+                          keyboardType: TextInputType.phone,
+                          onSaved: (value) => _phone = value as String,
+                        ),
                       ),
                     ),
                   ),
@@ -94,7 +118,8 @@ class LoginScreen extends StatelessWidget {
                     child: TextButton(
                       onPressed: () {
                         Provider.of<Auth>(context, listen: false).phoneNumber =
-                            phoneController.text;
+                            _phone!;
+                        print(phoneController.text);
                         Navigator.of(context).pushNamed(Verificatoin.routeName);
                       },
                       child: Text(
