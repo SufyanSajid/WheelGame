@@ -35,7 +35,7 @@ class _VerificatoinState extends State<Verificatoin> {
     super.initState();
     phone = Provider.of<Auth>(context, listen: false).phoneNumber;
     // sent_otp();
-    Provider.of<Auth>(context, listen: false).sent_otp();
+    // Provider.of<Auth>(context, listen: false).sent_otp();
   }
 
   // Future sent_otp() async {

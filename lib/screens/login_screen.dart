@@ -21,6 +21,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    var _isloading = false;
     String? _phone;
     return Stack(
       children: [
@@ -48,7 +49,7 @@ class LoginScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10.0),
                     child: Container(
-                      height: size.height * 0.08,
+                      height: size.height * 0.09,
                       width: size.width * 0.8,
                       decoration: BoxDecoration(
                         color: Colors.grey[500]!.withOpacity(0.5),
@@ -78,26 +79,32 @@ class LoginScreen extends StatelessWidget {
                       //       keyboardType: TextInputType.phone),
                       // ),
                       child: Center(
-                        child: IntlPhoneField(
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            prefixIcon: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20.0),
-                              child: Icon(
-                                FontAwesomeIcons.phone,
-                                size: 28,
-                                color: kWhite,
-                              ),
+                        child: Container(
+                          child: IntlPhoneField(
+                            initialCountryCode: 'PK',
+                            textAlign: TextAlign.justify,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              // prefixIcon: Padding(
+                              //   padding:
+                              //       const EdgeInsets.symmetric(horizontal: 20.0),
+                              //   child: Icon(
+                              //     FontAwesomeIcons.phone,
+                              //     size: 28,
+                              //     color: kWhite,
+                              //   ),
+                              // ),
+                              // hintText: "Enter Phone Number ",
                             ),
-                            hintText: "Enter Phone Number ",
-                            hintStyle: kBodyText,
+                            style: kBodyText,
+                            controller: phoneController,
+                            textInputAction: TextInputAction.done,
+                            keyboardType: TextInputType.phone,
+                            onChanged: (phone) {
+                              _phone = phone.completeNumber;
+                              print(_phone);
+                            },
                           ),
-                          style: kBodyText,
-                          controller: phoneController,
-                          textInputAction: TextInputAction.done,
-                          keyboardType: TextInputType.phone,
-                          onSaved: (value) => _phone = value as String,
                         ),
                       ),
                     ),
@@ -116,11 +123,15 @@ class LoginScreen extends StatelessWidget {
                       color: kBlue,
                     ),
                     child: TextButton(
-                      onPressed: () {
+                      onPressed: () async {
                         Provider.of<Auth>(context, listen: false).phoneNumber =
                             _phone!;
-                        print(phoneController.text);
-                        Navigator.of(context).pushNamed(Verificatoin.routeName);
+                        await Provider.of<Auth>(context, listen: false)
+                            .sent_otp()
+                            .then((_) {
+                          Navigator.of(context)
+                              .pushNamed(Verificatoin.routeName);
+                        });
                       },
                       child: Text(
                         'Send OTP',

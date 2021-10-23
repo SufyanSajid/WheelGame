@@ -66,7 +66,7 @@ class Auth with ChangeNotifier {
           currentUser = value.user;
           print("donoeooeoeooeoeoeoee");
           // homePagedata = Provider.of<UserData>(ctx).fetchAndSetAmount('Sufyan');
-          Navigator.of(ctx).pushNamed(HomePage.routeName);
+          Navigator.of(ctx).pushReplacementNamed(HomePage.routeName);
           print(value.user);
         }
       });
